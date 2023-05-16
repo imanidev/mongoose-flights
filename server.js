@@ -5,6 +5,7 @@ const app = express();
 const mongoose = require("mongoose");
 const port = 3000;
 const db = mongoose.connection;
+const Flights = require("./models/flight");
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
@@ -23,3 +24,15 @@ setTimeout(() => {
 
 app.set("view engine", "jsx");
 app.engine("jsx", require("jsx-view-engine").createEngine());
+
+app.get("/flights", (req, res) => {
+  Flights.find({}, (err, flights) => {
+    res.render("index", { flights });
+  });
+});
+
+
+
+app.listen(port, () => {
+  console.log(`Listening on port: ${port}`);
+});
